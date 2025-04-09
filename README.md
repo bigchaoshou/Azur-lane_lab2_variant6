@@ -2,11 +2,11 @@
 
 ## Project structure
 
-- `Binary_tree.py` -- implementation of `Binary tree` class with `add`
+- `Binary_tree2.py` -- implementation of `Binary tree` class with `add`
   `set`, `remove`, `search`, `returnsize`, `is_member`, `reverse`,
   `fromlist`, `tolist`, `filter`, `map`, `reduce_process`, `iterator`
   `is_empty`, `concat` features.
-- `Binary tree_test.py` -- Unit tests for the Binary tree class.
+- `test.py` -- Unit tests for the Binary tree class.
 
 ## Features
 
