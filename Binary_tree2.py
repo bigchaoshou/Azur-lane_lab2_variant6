@@ -127,7 +127,8 @@ class BinaryTreeDict(Generic[KT, VT]):
         return "{" + ", ".join(f"{repr(k)}: {repr(v)}"
                                for k, v in sorted(self.to_list(),
                                                   key=lambda x:
-                                                  (x[0] is not None, x[0]))) + "}"
+                                                  (x[0] is not None,
+                                                   x[0]))) + "}"
 
     def __iter__(self) -> Iterator[KT]:
         for k, _ in self.to_list():

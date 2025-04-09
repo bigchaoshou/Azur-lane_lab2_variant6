@@ -5,10 +5,10 @@ from Binary_tree2 import*
 def test_api():
     empty_tree = BinaryTreeDict()
 
-    l1 = cons("none" , "c" , cons("two", "b"
+    l1 = cons("none", "c", cons("two", "b"
                                 , cons("a", 1, empty_tree)))
-    l2 = cons("a" , 1 , cons("none", "c"
-                           , cons("two" , "b" , empty_tree)))
+    l2 = cons("a", 1, cons("none", "c"
+                                , cons("two", "b", empty_tree)))
 
     assert str(empty_tree) == "{}"
     assert str(l1) in [
@@ -45,10 +45,13 @@ def test_api():
     assert to_list(l1) in map(list, itertools.permutations(expected_pairs))
 
     assert l1 == from_list(expected_pairs)
-    assert l1 == from_list([("two", "B"), ("a", 1), ("two", "b"), ("none", "c")])
+    assert l1 == from_list([("two", "B"),
+                            ("a", 1), ("two", "b"),
+                            ("none", "c")])
 
     assert concat(l1, l2) == from_list([("two", "B"),
-                                        ("a", 1), ("two", "b"), ("none", "c")])
+                                        ("a", 1), ("two", "b"),
+                                        ("none", "c")])
 
     buf = []
     for e in l1:
