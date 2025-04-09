@@ -77,11 +77,13 @@ class BinaryTreeDict(Generic[KT, VT]):
             return self
         if key < self.node['key']:
             new_left = self.node['left'].remove(key)
-            return BinaryTreeDict({'key': self.node['key'], 'value': self.node['value'],
-                                   'left': new_left, 'right': self.node['right']})
+            return BinaryTreeDict({'key': self.node['key'],
+                                   'value': self.node['value'], 'left': new_left,
+                                   'right': self.node['right']})
         elif key > self.node['key']:
             new_right = self.node['right'].remove(key)
-            return BinaryTreeDict({'key': self.node['key'], 'value': self.node['value'],
+            return BinaryTreeDict({'key': self.node['key'],
+                                   'value': self.node['value'],
                                    'left': self.node['left'], 'right': new_right})
         else:
             if self.node['left'].is_empty():
@@ -112,22 +114,31 @@ class BinaryTreeDict(Generic[KT, VT]):
         return tree
 
     def __eq__(self, other: Any) -> bool:
-        return isinstance(other, BinaryTreeDict) and sorted(self.to_list()) == sorted(other.to_list())
+        return (isinstance(other, BinaryTreeDict) and
+                sorted(self.to_list()) == sorted(other.to_list()))
 
     def __str__(self) -> str:
-        return "{" + ", ".join(f"{repr(k)}: {repr(v)}" for k, v in sorted(self.to_list(), key=lambda x: (x[0] is not None, x[0]))) + "}"
+        return "{" + ", ".join(f"{repr(k)}: {repr(v)}"
+                               for k, v in sorted(self.to_list(),
+                                                  key=lambda x:
+                                                  (x[0] is not None, x[0]))) + "}"
 
     def __iter__(self) -> Iterator[KT]:
         for k, _ in self.to_list():
             yield k
 
-    def map(self, f: Callable[[KT], KT]) -> BinaryTreeDict[KT, VT]:
-        return BinaryTreeDict.from_list([(f(k), v) for k, v in self.to_list()])
+    def map(self, f: Callable[[KT], KT]) \
+            -> BinaryTreeDict[KT, VT]:
+        return BinaryTreeDict.from_list([(f(k), v)
+                                         for k, v in self.to_list()])
 
-    def filter(self, f: Callable[[KT], bool]) -> BinaryTreeDict[KT, VT]:
-        return BinaryTreeDict.from_list([(k, v) for k, v in self.to_list() if f(k)])
+    def filter(self, f: Callable[[KT], bool]) \
+            -> BinaryTreeDict[KT, VT]:
+        return BinaryTreeDict.from_list([(k, v) for
+                                         k, v in self.to_list() if f(k)])
 
-    def reduce(self, f: Callable[[AccT, KT], AccT], acc: AccT) -> AccT:
+    def reduce(self, f: Callable[[AccT, KT], AccT],
+               acc: AccT) -> AccT:
         for k, _ in self.to_list():
             acc = f(acc, k)
         return acc
