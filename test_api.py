@@ -5,10 +5,10 @@ from Binary_tree2 import*
 def test_api():
     empty_tree = BinaryTreeDict()
 
-    l1 = cons("none", "c", cons("two", "b"
+    l1 = cons("none" , "c" , cons("two", "b"
                                 , cons("a", 1, empty_tree)))
-    l2 = cons("a", 1, cons("none", "c"
-                           , cons("two", "b", empty_tree)))
+    l2 = cons("a" , 1 , cons("none", "c"
+                           , cons("two" , "b" , empty_tree)))
 
     assert str(empty_tree) == "{}"
     assert str(l1) in [
@@ -28,9 +28,12 @@ def test_api():
     assert length(l1) == 3
     assert length(l2) == 3
 
-    assert str(remove(l1, "none")) in ["{'two': 'b', 'a': 1}", "{'a': 1, 'two': 'b'}"]
-    assert str(remove(l1, "a")) in ["{'two': 'b', 'none': 'c'}",
-                                    "{'none': 'c', 'two': 'b'}"]
+    assert (str(remove(l1, "none")) in
+            ["{'two': 'b', 'a': 1}",
+             "{'a': 1, 'two': 'b'}"])
+    assert (str(remove(l1, "a")) in
+            ["{'two': 'b', 'none': 'c'}",
+            "{'none': 'c', 'two': 'b'}"])
 
     assert not member("none", empty_tree)
     assert member("none", l1)
