@@ -1,6 +1,7 @@
 from __future__ import annotations
-from typing import Any, Callable, Generic, Iterator, Optional, Tuple, TypeVar, Union
+from typing import Any, Callable, Generic, Iterator, Optional, Tuple, TypeVar
 from typing_extensions import Protocol
+
 
 class SupportsRichComparison(Protocol):
     def __lt__(self, other: Any) -> bool: ...
@@ -8,9 +9,11 @@ class SupportsRichComparison(Protocol):
     def __gt__(self, other: Any) -> bool: ...
     def __ge__(self, other: Any) -> bool: ...
 
+
 KT = TypeVar("KT", bound=SupportsRichComparison)
 VT = TypeVar("VT")
 AccT = TypeVar("AccT")
+
 
 class BinaryTreeDict(Generic[KT, VT]):
     def __init__(self, node: Optional[dict] = None):
@@ -24,7 +27,8 @@ class BinaryTreeDict(Generic[KT, VT]):
 
     def add(self, key: KT, value: VT = None) -> BinaryTreeDict[KT, VT]:
         if self.is_empty():
-            return BinaryTreeDict({'key': key, 'value': value, 'left': empty(), 'right': empty()})
+            return BinaryTreeDict({'key': key, 'value': value,
+                                   'left': empty(), 'right': empty()})
 
         if key == self.node['key']:
             return BinaryTreeDict({
@@ -73,10 +77,12 @@ class BinaryTreeDict(Generic[KT, VT]):
             return self
         if key < self.node['key']:
             new_left = self.node['left'].remove(key)
-            return BinaryTreeDict({'key': self.node['key'], 'value': self.node['value'], 'left': new_left, 'right': self.node['right']})
+            return BinaryTreeDict({'key': self.node['key'], 'value': self.node['value'],
+                                   'left': new_left, 'right': self.node['right']})
         elif key > self.node['key']:
             new_right = self.node['right'].remove(key)
-            return BinaryTreeDict({'key': self.node['key'], 'value': self.node['value'], 'left': self.node['left'], 'right': new_right})
+            return BinaryTreeDict({'key': self.node['key'], 'value': self.node['value'],
+                                   'left': self.node['left'], 'right': new_right})
         else:
             if self.node['left'].is_empty():
                 return self.node['right']
@@ -84,7 +90,8 @@ class BinaryTreeDict(Generic[KT, VT]):
                 return self.node['left']
             min_key, min_value = self.node['right']._find_min()
             new_right = self.node['right'].remove(min_key)
-            return BinaryTreeDict({'key': min_key, 'value': min_value, 'left': self.node['left'], 'right': new_right})
+            return BinaryTreeDict({'key': min_key, 'value': min_value,
+                                   'left': self.node['left'], 'right': new_right})
 
     def _find_min(self) -> Tuple[KT, VT]:
         if self.node['left'].is_empty():
@@ -94,7 +101,8 @@ class BinaryTreeDict(Generic[KT, VT]):
     def to_list(self) -> list[Tuple[KT, VT]]:
         if self.is_empty():
             return []
-        return self.node['left'].to_list() + [(self.node['key'], self.node['value'])] + self.node['right'].to_list()
+        return (self.node['left'].to_list() + [(self.node['key'], self.node['value'])]
+                + self.node['right'].to_list())
 
     @staticmethod
     def from_list(items: list[Tuple[KT, VT]]) -> BinaryTreeDict[KT, VT]:
@@ -130,32 +138,39 @@ _EMPTY_TREE: BinaryTreeDict = BinaryTreeDict(_EMPTY_NODE)
 _EMPTY_NODE['left'] = _EMPTY_TREE
 _EMPTY_NODE['right'] = _EMPTY_TREE
 
+
 def empty() -> BinaryTreeDict[Any, Any]:
     return _EMPTY_TREE
 
 
-def cons(key: KT, value: VT, tree: BinaryTreeDict[KT, VT]) -> BinaryTreeDict[KT, VT]:
+def cons(key: KT, value: VT, tree: BinaryTreeDict[KT, VT]) \
+        -> BinaryTreeDict[KT, VT]:
     return tree.add(key, value)
 
-def concat(t1: BinaryTreeDict[KT, VT], t2: BinaryTreeDict[KT, VT]) -> BinaryTreeDict[KT, VT]:
+def concat(t1: BinaryTreeDict[KT, VT], t2: BinaryTreeDict[KT, VT]) \
+        -> BinaryTreeDict[KT, VT]:
     return BinaryTreeDict.from_list(t1.to_list() + t2.to_list())
 
 def length(tree: BinaryTreeDict[KT, VT]) -> int:
     return len(tree.to_list())
 
-def member(key: KT, tree: BinaryTreeDict[KT, VT]) -> bool:
+def member(key: KT, tree: BinaryTreeDict[KT, VT]) \
+        -> bool:
     return tree.member(key)
 
-def remove(tree: BinaryTreeDict[KT, VT], key: KT) -> BinaryTreeDict[KT, VT]:
+def remove(tree: BinaryTreeDict[KT, VT], key: KT) \
+        -> BinaryTreeDict[KT, VT]:
     return tree.remove(key)
 
-def from_list(items: list[Tuple[KT, VT]]) -> BinaryTreeDict[KT, VT]:
+def from_list(items: list[Tuple[KT, VT]]) \
+        -> BinaryTreeDict[KT, VT]:
     return BinaryTreeDict.from_list(items)
 
 def to_list(tree: BinaryTreeDict[KT, VT]) -> list[Tuple[KT, VT]]:
     return tree.to_list()
 
-def intersection(t1: BinaryTreeDict[KT, VT], t2: BinaryTreeDict[KT, VT]) -> BinaryTreeDict[KT, VT]:
+def intersection(t1: BinaryTreeDict[KT, VT], t2: BinaryTreeDict[KT, VT])\
+        -> BinaryTreeDict[KT, VT]:
     result = empty()
     for k, v in to_list(t1):
         if t2.member(k):
@@ -163,11 +178,14 @@ def intersection(t1: BinaryTreeDict[KT, VT], t2: BinaryTreeDict[KT, VT]) -> Bina
     return result
 
 
-def map_set(tree: BinaryTreeDict[KT, None], f: Callable[[KT], KT]) -> BinaryTreeDict[KT, None]:
+def map_set(tree: BinaryTreeDict[KT, None], f: Callable[[KT], KT]) \
+        -> BinaryTreeDict[KT, None]:
     return tree.map(f)
 
-def filter_set(tree: BinaryTreeDict[KT, None], f: Callable[[KT], bool]) -> BinaryTreeDict[KT, None]:
+def filter_set(tree: BinaryTreeDict[KT, None], f: Callable[[KT], bool]) \
+        -> BinaryTreeDict[KT, None]:
     return tree.filter(f)
 
-def reduce_set(tree: BinaryTreeDict[KT, None], f: Callable[[AccT, KT], AccT], acc: AccT) -> AccT:
+def reduce_set(tree: BinaryTreeDict[KT, None], f: Callable[[AccT, KT], AccT],
+               acc: AccT) -> AccT:
     return tree.reduce(f, acc)

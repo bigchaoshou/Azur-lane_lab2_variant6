@@ -5,9 +5,10 @@ from Binary_tree2 import*
 def test_api():
     empty_tree = BinaryTreeDict()
 
-    # 所有 key 都使用 str 类型，避免 TypeError
-    l1 = cons("none", "c", cons("two", "b", cons("a", 1, empty_tree)))
-    l2 = cons("a", 1, cons("none", "c", cons("two", "b", empty_tree)))
+    l1 = cons("none", "c", cons("two", "b"
+                                , cons("a", 1, empty_tree)))
+    l2 = cons("a", 1, cons("none", "c"
+                           , cons("two", "b", empty_tree)))
 
     assert str(empty_tree) == "{}"
     assert str(l1) in [
@@ -28,7 +29,8 @@ def test_api():
     assert length(l2) == 3
 
     assert str(remove(l1, "none")) in ["{'two': 'b', 'a': 1}", "{'a': 1, 'two': 'b'}"]
-    assert str(remove(l1, "a")) in ["{'two': 'b', 'none': 'c'}", "{'none': 'c', 'two': 'b'}"]
+    assert str(remove(l1, "a")) in ["{'two': 'b', 'none': 'c'}",
+                                    "{'none': 'c', 'two': 'b'}"]
 
     assert not member("none", empty_tree)
     assert member("none", l1)
@@ -39,39 +41,37 @@ def test_api():
     expected_pairs = [("a", 1), ("two", "b"), ("none", "c")]
     assert to_list(l1) in map(list, itertools.permutations(expected_pairs))
 
-    # 测试 from_list 去重与等价性
     assert l1 == from_list(expected_pairs)
     assert l1 == from_list([("two", "B"), ("a", 1), ("two", "b"), ("none", "c")])
 
-    assert concat(l1, l2) == from_list([("two", "B"), ("a", 1), ("two", "b"), ("none", "c")])
+    assert concat(l1, l2) == from_list([("two", "B"),
+                                        ("a", 1), ("two", "b"), ("none", "c")])
 
     buf = []
     for e in l1:
         buf.append(e)
     assert buf in map(list, itertools.permutations(["a", "two", "none"]))
 
-    lst = list(map(lambda e: e[0], to_list(l1))) + list(map(lambda e: e[0], to_list(l2)))
+    lst = (list(map(lambda e: e[0], to_list(l1))) +
+           list(map(lambda e: e[0], to_list(l2))))
     for e in l1:
         lst.remove(e)
     for e in l2:
         lst.remove(e)
     assert lst == []
 
-    # 测试 intersection
     set1 = from_list([("a", None), ("b", None), ("c", None)])
     set2 = from_list([("b", None), ("c", None), ("d", None)])
     inter = intersection(set1, set2)
-    assert to_list(inter) in map(list, itertools.permutations([("b", None), ("c", None)]))
+    assert to_list(inter) in map(list, itertools.permutations([("b", None),
+                                                               ("c", None)]))
 
-    # 测试 map_set：将 key 全部加前缀
     mapped = map_set(set1, lambda k: k.upper())
     expected_keys = ["A", "B", "C"]
     assert sorted([k for k, _ in to_list(mapped)]) == expected_keys
 
-    # 测试 filter_set：只保留包含字母 'b' 的 key
     filtered = filter_set(set1, lambda k: 'b' in k)
     assert to_list(filtered) == [("b", None)]
 
-    # 测试 reduce_set：统计 key 的总长度
     total_len = reduce_set(set1, lambda acc, k: acc + len(k), 0)
     assert total_len == len("a") + len("b") + len("c")
