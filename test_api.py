@@ -1,5 +1,9 @@
 import itertools
-from Binary_tree2 import *
+from Binary_tree2 import (BinaryTreeDict, cons, length
+, remove, member, to_list, from_list,
+concat, intersection,
+map_set, filter_set)
+
 
 
 def test_api():
