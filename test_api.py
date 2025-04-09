@@ -1,5 +1,5 @@
 import itertools
-from Binary_tree2 import*
+from Binary_tree2 import *
 
 
 def test_api():
@@ -8,7 +8,7 @@ def test_api():
     l1 = cons("none", "c", cons("two", "b"
                                 , cons("a", 1, empty_tree)))
     l2 = cons("a", 1, cons("none", "c"
-                                , cons("two", "b", empty_tree)))
+     , cons("two", "b", empty_tree)))
 
     assert str(empty_tree) == "{}"
     assert str(l1) in [
