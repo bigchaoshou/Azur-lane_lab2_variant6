@@ -25,7 +25,8 @@ class BinaryTreeDict(Generic[KT, VT]):
     def is_empty(self) -> bool:
         return self.node['key'] is None
 
-    def add(self, key: KT, value: VT = None) -> BinaryTreeDict[KT, VT]:
+    def add(self, key: KT, value: Optional[VT] = None) -> (
+            BinaryTreeDict)[KT, VT]:
         if self.is_empty():
             return BinaryTreeDict({'key': key, 'value': value,
                                    'left': empty(), 'right': empty()})
