@@ -7,7 +7,7 @@ def test_api():
 
     l1 = cons("none", "c", cons("two", "b",
                                 cons("a", 1, empty_tree)))
-    l2 = cons("a", 1, cons("none", "c", 
+    l2 = cons("a", 1, cons("none", "c",
                            cons("two", "b", empty_tree)))
 
     assert str(empty_tree) == "{}"
