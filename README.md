@@ -6,7 +6,7 @@
   `set`, `remove`, `search`, `returnsize`, `is_member`, `reverse`,
   `fromlist`, `tolist`, `filter`, `map`, `reduce_process`, `iterator`
   `is_empty`, `concat` features.
-- `test.py` -- Unit tests for the Binary tree class.
+- `test_api.py` -- Unit tests for the Binary tree class.
 
 ## Features
 
