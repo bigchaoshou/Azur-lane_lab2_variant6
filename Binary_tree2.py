@@ -1,6 +1,6 @@
 from __future__ import annotations
-from typing import Any, Callable, Generic, Iterator, Optional, Tuple, TypeVar
-from typing_extensions import Protocol, TypedDict
+from typing import Any, Callable, Iterator, Optional, Tuple
+from typing_extensions import TypedDict
 
 
 class TreeNodeDict(TypedDict, total=False):
@@ -158,3 +158,12 @@ def from_list(items: list[Tuple[int, str]]) -> BinaryTreeDict[int, str]:
 def to_list(tree: BinaryTreeDict[int, str]) -> list[Tuple[int, str]]:
     """Convert the tree to a list of key-value pairs (immutable)"""
     return tree.to_list()
+
+
+def intersection(t1: BinaryTreeDict[int, str], t2: BinaryTreeDict[int, str]) \
+        -> BinaryTreeDict[int, str]:
+    result = empty()
+    for k, v in to_list(t1):
+        if t2.member(k):
+            result = result.add(k, v)
+    return result
