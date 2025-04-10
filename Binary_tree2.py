@@ -1,11 +1,12 @@
 from __future__ import annotations
-from typing import Any, Callable, Iterator, Optional, Tuple
+from typing import Any, Callable, Iterator, Optional, Tuple, Union
 from typing_extensions import TypedDict
+import itertools
 
 
 class TreeNodeDict(TypedDict, total=False):
-    key: int
-    value: str
+    key: str  # 修改键类型为str
+    value: Any  # 允许任意值类型
     left: Optional['TreeNodeDict']
     right: Optional['TreeNodeDict']
 
@@ -19,24 +20,27 @@ class BinaryTreeDict:
     def is_empty(self) -> bool:
         return self.node['key'] is None
 
-    def add(self, key: int, value: str) -> BinaryTreeDict[int, str]:
-        """Add a new key-value pair to the tree (immutable operation)"""
+    def add(self, key: str, value: Any) -> BinaryTreeDict:  # 修改类型签名
         if self.is_empty():
-            return BinaryTreeDict({'key': key, 'value': value, 'left': empty(), 'right': empty()})
+            return BinaryTreeDict({'key': key, 'value': value,
+                                 'left': empty(), 'right': empty()})
 
         if key == self.node['key']:
-            return BinaryTreeDict({'key': key, 'value': value, 'left': self.node['left'], 'right': self.node['right']})
+            return BinaryTreeDict({'key': key, 'value': value,
+                                   'left': self.node['left'],
+                                   'right': self.node['right']})
         elif key < self.node['key']:
-            new_left = self.node['left'].add(key, value)  # Recursively create new left subtree
+            new_left = self.node['left'].add(key, value)
             return BinaryTreeDict(
-                {'key': self.node['key'], 'value': self.node['value'], 'left': new_left, 'right': self.node['right']})
+                {'key': self.node['key'], 'value': self.node['value'],
+                 'left': new_left, 'right': self.node['right']})
         else:
-            new_right = self.node['right'].add(key, value)  # Recursively create new right subtree
+            new_right = self.node['right'].add(key, value)
             return BinaryTreeDict(
-                {'key': self.node['key'], 'value': self.node['value'], 'left': self.node['left'], 'right': new_right})
+                {'key': self.node['key'], 'value': self.node['value'],
+                 'left': self.node['left'], 'right': new_right})
 
-    def search(self, key: int) -> Optional[str]:
-        """Search for the value corresponding to the key (immutable)"""
+    def search(self, key: str) -> Optional[Any]:  # 修改返回类型
         if self.is_empty():
             return None
         if key == self.node['key']:
@@ -46,9 +50,15 @@ class BinaryTreeDict:
         else:
             return self.node['right'].search(key)
 
-    def member(self, key: int) -> bool:
-        """Check if the key is in the tree"""
-        return self.search(key) is not None
+    def member(self, key: str) -> bool:  # 正确实现成员检查
+        if self.is_empty():
+            return False
+        if key == self.node['key']:
+            return True
+        elif key < self.node['key']:
+            return self.node['left'].member(key)
+        else:
+            return self.node['right'].member(key)
 
     def remove(self, key: int) -> BinaryTreeDict[int, str]:
         """Remove a key-value pair (immutable operation)"""
@@ -120,16 +130,6 @@ class BinaryTreeDict:
         return acc
 
 
-def empty() -> BinaryTreeDict[Any, Any]:
-    """Create an empty tree"""
-    return BinaryTreeDict({'key': None, 'value': None, 'left': None, 'right': None})
-
-
-def cons(key: int, value: str, tree: BinaryTreeDict[int, str]) -> BinaryTreeDict[int, str]:
-    """Add a key-value pair to the tree (immutable)"""
-    return tree.add(key, value)
-
-
 def concat(t1: BinaryTreeDict[int, str], t2: BinaryTreeDict[int, str]) -> BinaryTreeDict[int, str]:
     """Concatenate two trees into a new one (immutable)"""
     return BinaryTreeDict.from_list(t1.to_list() + t2.to_list())
@@ -160,25 +160,31 @@ def to_list(tree: BinaryTreeDict[int, str]) -> list[Tuple[int, str]]:
     return tree.to_list()
 
 
-def intersection(t1: BinaryTreeDict[int, str], t2: BinaryTreeDict[int, str]) \
-        -> BinaryTreeDict[int, str]:
+def intersection(t1: BinaryTreeDict, t2: BinaryTreeDict) -> BinaryTreeDict:
+    """正确实现集合交集"""
     result = empty()
     for k, v in to_list(t1):
-        if t2.member(k):
+        if t2.member(k):  # 现在使用正确的member实现
             result = result.add(k, v)
     return result
 
 
-def map_set(tree: BinaryTreeDict[int, None], f: Callable[[int], int]) \
-        -> BinaryTreeDict[int, None]:
-    return tree.map(f)
+def empty() -> BinaryTreeDict:
+    return BinaryTreeDict({'key': None, 'value': None,
+                          'left': None, 'right': None})
 
 
-def filter_set(tree: BinaryTreeDict[int, None], f: Callable[[int], bool]) \
-        -> BinaryTreeDict[int, None]:
-    return tree.filter(f)
+def cons(key: str, value: Any, tree: BinaryTreeDict) -> BinaryTreeDict:
+    return tree.add(key, value)
 
 
-def reduce_set(tree: BinaryTreeDict[int, None], f: Callable[[str, int], str],
-               acc: str) -> str:
+def map_set(tree: BinaryTreeDict, f: Callable[[str], str]) -> BinaryTreeDict:
+    return tree.map(lambda k, v: (f(k), v))  # 保持值不变
+
+
+def filter_set(tree: BinaryTreeDict, f: Callable[[str], bool]) -> BinaryTreeDict:
+    return tree.filter(lambda k, v: f(k))  # 只检查键
+
+
+def reduce_set(tree: BinaryTreeDict, f: Callable[[Any, str, Any], Any], acc: Any) -> Any:
     return tree.reduce(f, acc)
