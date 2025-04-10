@@ -122,7 +122,7 @@ class BinaryTreeDict:
 
 def empty() -> BinaryTreeDict[Any, Any]:
     """Create an empty tree"""
-    return BinaryTreeDict()
+    return BinaryTreeDict({'key': None, 'value': None, 'left': None, 'right': None})
 
 
 def cons(key: int, value: str, tree: BinaryTreeDict[int, str]) -> BinaryTreeDict[int, str]:
