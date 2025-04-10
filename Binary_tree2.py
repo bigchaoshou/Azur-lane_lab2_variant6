@@ -167,3 +167,18 @@ def intersection(t1: BinaryTreeDict[int, str], t2: BinaryTreeDict[int, str]) \
         if t2.member(k):
             result = result.add(k, v)
     return result
+
+
+def map_set(tree: BinaryTreeDict[int, None], f: Callable[[int], int]) \
+        -> BinaryTreeDict[int, None]:
+    return tree.map(f)
+
+
+def filter_set(tree: BinaryTreeDict[int, None], f: Callable[[int], bool]) \
+        -> BinaryTreeDict[int, None]:
+    return tree.filter(f)
+
+
+def reduce_set(tree: BinaryTreeDict[int, None], f: Callable[[str, int], str],
+               acc: str) -> str:
+    return tree.reduce(f, acc)
