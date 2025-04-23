@@ -1,6 +1,6 @@
 import itertools
 from hypothesis import given, strategies as st
-from Binary_tree2 import (
+from Binary_tree import (
     BinaryTreeDict,
     cons,
     empty,
