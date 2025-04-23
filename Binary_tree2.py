@@ -158,7 +158,9 @@ class BinaryTreeDict(Generic[KT, VT]):
         """检查值是否存在"""
         return self._value_recursive(self.root, value)
 
-    def _value_recursive(self, node: Optional[TreeNodeDict], value: VT) -> bool:
+    def _value_recursive(self,
+                         node: Optional[TreeNodeDict],
+                         value: VT) -> bool:
         if node is None:
             return False
         return (
@@ -168,7 +170,9 @@ class BinaryTreeDict(Generic[KT, VT]):
         )
 
     @classmethod
-    def from_list(cls, lst: Iterable[Tuple[KT, VT]]) -> 'BinaryTreeDict[KT, VT]':
+    def from_list(cls,
+                  lst: Iterable[Tuple[KT, VT]]
+                  ) -> 'BinaryTreeDict[KT, VT]':
         """从可迭代对象创建字典"""
         bst = cls.empty()
         for key, value in lst:
@@ -181,7 +185,9 @@ class BinaryTreeDict(Generic[KT, VT]):
         self._inorder_traversal(self.root, result)
         return result
 
-    def _inorder_traversal(self, node: Optional[TreeNodeDict], result: List[Tuple[KT, VT]]) -> None:
+    def _inorder_traversal(self,
+                           node: Optional[TreeNodeDict],
+                           result: List[Tuple[KT, VT]]) -> None:
         if node is not None:
             self._inorder_traversal(node['left'], result)
             result.append((node['key'], node['value']))
@@ -207,7 +213,9 @@ class BinaryTreeDict(Generic[KT, VT]):
             result = func(result, k)
         return result
 
-    def concat(self, other: 'BinaryTreeDict[KT, VT]') -> 'BinaryTreeDict[KT, VT]':
+    def concat(self,
+               other: 'BinaryTreeDict[KT, VT]'
+               ) -> 'BinaryTreeDict[KT, VT]':
         """合并两个字典"""
         new_tree = self
         for key in other:  # 现在只需要迭代键
