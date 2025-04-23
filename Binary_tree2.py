@@ -203,8 +203,8 @@ class BinaryTreeDict(Generic[KT, VT]):
             new_tree = new_tree.add(key, value)
         return new_tree
 
-    def __iter__(self) -> Iterator[KT]:
-        return (k for k, _ in self.to_list())
+    def __iter__(self) -> Iterator[Tuple[KT, VT]]:  # 修正迭代器返回键值对
+        return iter(self.to_list())
 
     def __str__(self) -> str:
         """字典的字符串表示"""
