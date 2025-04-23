@@ -199,12 +199,15 @@ class BinaryTreeDict(Generic[KT, VT]):
     def concat(self, other: 'BinaryTreeDict[KT, VT]') -> 'BinaryTreeDict[KT, VT]':
         """合并两个字典"""
         new_tree = self
-        for key, value in other:
-            new_tree = new_tree.add(key, value)
+        for key in other:  # 现在只需要迭代键
+            # 需要添加对应的值获取方式
+            value = other.search(key)
+            if value is not None:
+                new_tree = new_tree.add(key, value)
         return new_tree
 
-    def __iter__(self) -> Iterator[Tuple[KT, VT]]:  # 修正迭代器返回键值对
-        return iter(self.to_list())
+    def __iter__(self) -> Iterator[KT]:  # 修改迭代器只返回键
+        return (k for k, _ in self.to_list())
 
     def __str__(self) -> str:
         """字典的字符串表示"""
