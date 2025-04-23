@@ -278,13 +278,13 @@ def intersection(t1: BinaryTreeDict[Any, Any], t2: BinaryTreeDict[Any, Any]) -> 
     return result
 
 
-def filter(tree: BinaryTreeDict[Any, Any], predicate: Callable[[Any, Any], bool]) -> BinaryTreeDict[Any, Any]:
+def filter_set(tree: BinaryTreeDict[Any, Any], predicate: Callable[[Any, Any], bool]) -> BinaryTreeDict[Any, Any]:
     return tree.filter(predicate)
 
 
-def map(tree: BinaryTreeDict[Any, Any], func: Callable[[Any, Any], Tuple[Any, Any]]) -> BinaryTreeDict[Any, Any]:
+def map_set(tree: BinaryTreeDict[Any, Any], func: Callable[[Any, Any], Tuple[Any, Any]]) -> BinaryTreeDict[Any, Any]:
     return tree.map(func)
 
 
-def reduce(tree: BinaryTreeDict[Any, Any], func: Callable[[Any, Any, Any], Any], initial: Any) -> Any:
+def reduce_set(tree: BinaryTreeDict[Any, Any], func: Callable[[Any, Any, Any], Any], initial: Any) -> Any:
     return tree.reduce(func, initial)
