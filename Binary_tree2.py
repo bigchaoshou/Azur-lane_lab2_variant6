@@ -18,8 +18,8 @@ def compare_keys(a: KT, b: KT) -> int:
 
 
 class TreeNodeDict(TypedDict, total=False):
-    key: KT
-    value: VT
+    key: Any
+    value: Any
     left: Optional['TreeNodeDict']
     right: Optional['TreeNodeDict']
 
@@ -185,7 +185,7 @@ class BinaryTreeDict(Generic[KT, VT]):
         return BinaryTreeDict.from_list(result)
 
     def map(self, func: Callable[[KT], KT]) -> 'BinaryTreeDict[KT, VT]':
-        new_tree = BinaryTreeDict()
+        new_tree: BinaryTreeDict[KT, VT] = BinaryTreeDict()
         for k, v in self.to_list():
             new_tree = new_tree.add(func(k), v)
         return new_tree
