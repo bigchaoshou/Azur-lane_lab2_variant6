@@ -3,7 +3,7 @@ from typing import (
     Iterator, TypedDict, Generic, TypeVar, Iterable, Any
 )
 
-KT = TypeVar('KT', int, str, None)
+KT = TypeVar('KT')
 VT = TypeVar('VT')
 AccT = TypeVar('AccT')
 
