@@ -2,12 +2,10 @@ from typing import (
     Optional, List, Tuple, Callable,
     Iterator, TypedDict, Generic, TypeVar, Iterable, Any
 )
-import itertools
 
-# 定义类型变量
-KT = TypeVar('KT', int, str, None)  # 键类型允许int、str、None
-VT = TypeVar('VT')  # 值类型完全泛型
-AccT = TypeVar('AccT')  # 累加器类型泛型
+KT = TypeVar('KT', int, str, None)
+VT = TypeVar('VT')
+AccT = TypeVar('AccT')
 
 
 def compare_keys(a: KT, b: KT) -> int:
@@ -20,7 +18,6 @@ def compare_keys(a: KT, b: KT) -> int:
 
 
 class TreeNodeDict(TypedDict, total=False):
-    """二叉搜索树节点字典结构"""
     key: KT
     value: VT
     left: Optional['TreeNodeDict']
@@ -28,7 +25,6 @@ class TreeNodeDict(TypedDict, total=False):
 
 
 class BinaryTreeDict(Generic[KT, VT]):
-    """不可变二叉搜索树字典"""
 
     def __init__(self, root: Optional[TreeNodeDict] = None) -> None:
         self.root = root
@@ -37,7 +33,6 @@ class BinaryTreeDict(Generic[KT, VT]):
         return self.root is None
 
     def size(self) -> int:
-        """获取字典条目数"""
         return self._size_recursive(self.root)
 
     def _size_recursive(self, node: Optional[TreeNodeDict]) -> int:
@@ -48,7 +43,6 @@ class BinaryTreeDict(Generic[KT, VT]):
                 + self._size_recursive(node['right']))
 
     def add(self, key: KT, value: VT) -> 'BinaryTreeDict[KT, VT]':
-        """添加/更新键值对，返回新字典"""
         return BinaryTreeDict(self._add_recursive(self.root, key, value))
 
     def _add_recursive(
@@ -81,7 +75,6 @@ class BinaryTreeDict(Generic[KT, VT]):
             }
 
     def search(self, key: KT) -> Optional[VT]:
-        """搜索指定键的值"""
         node = self._search_recursive(self.root, key)
         return node['value'] if node else None
 
@@ -99,17 +92,14 @@ class BinaryTreeDict(Generic[KT, VT]):
             return self._search_recursive(node['right'], key)
 
     def contains_key(self, key: KT) -> bool:
-        """检查键是否存在"""
         return self._search_recursive(self.root, key) is not None
 
     def set_value(self, key: KT,
                   new_value: VT) -> 'BinaryTreeDict[KT, VT]':
-        """更新键对应的值，返回新字典"""
         return self.add(key, new_value)
 
     def remove(self,
                key: KT) -> 'BinaryTreeDict[KT, VT]':
-        """删除指定键的条目，返回新字典"""
         return BinaryTreeDict(self._delete_recursive(self.root, key))
 
     def _delete_recursive(self,
@@ -139,7 +129,6 @@ class BinaryTreeDict(Generic[KT, VT]):
             if node['right'] is None:
                 return node['left']
 
-            # 找到右子树最小节点
             min_node = self._find_min(node['right'])
             return {
                 'key': min_node['key'],
@@ -149,13 +138,11 @@ class BinaryTreeDict(Generic[KT, VT]):
             }
 
     def _find_min(self, node: TreeNodeDict) -> TreeNodeDict:
-        """查找子树最小节点"""
         while node['left'] is not None:
             node = node['left']
         return node
 
     def contains_value(self, value: VT) -> bool:
-        """检查值是否存在"""
         return self._value_recursive(self.root, value)
 
     def _value_recursive(self,
@@ -173,14 +160,12 @@ class BinaryTreeDict(Generic[KT, VT]):
     def from_list(cls,
                   lst: Iterable[Tuple[KT, VT]]
                   ) -> 'BinaryTreeDict[KT, VT]':
-        """从可迭代对象创建字典"""
         bst = cls.empty()
         for key, value in lst:
             bst = bst.add(key, value)
         return bst
 
     def to_list(self) -> List[Tuple[KT, VT]]:
-        """转换为有序键值对列表"""
         result: List[Tuple[KT, VT]] = []
         self._inorder_traversal(self.root, result)
         return result
@@ -196,7 +181,6 @@ class BinaryTreeDict(Generic[KT, VT]):
     def filter(self,
                predicate: Callable[[KT], bool]
                ) -> 'BinaryTreeDict[KT, VT]':
-        """过滤键值对生成新字典"""
         result = [(k, v) for k, v in self.to_list() if predicate(k)]
         return BinaryTreeDict.from_list(result)
 
@@ -207,7 +191,6 @@ class BinaryTreeDict(Generic[KT, VT]):
         return new_tree
 
     def reduce(self, func: Callable[[AccT, KT], AccT], initial: AccT) -> AccT:
-        """归约操作"""
         result = initial
         for k, _ in self.to_list():
             result = func(result, k)
@@ -216,20 +199,17 @@ class BinaryTreeDict(Generic[KT, VT]):
     def concat(self,
                other: 'BinaryTreeDict[KT, VT]'
                ) -> 'BinaryTreeDict[KT, VT]':
-        """合并两个字典"""
         new_tree = self
-        for key in other:  # 现在只需要迭代键
-            # 需要添加对应的值获取方式
+        for key in other:
             value = other.search(key)
             if value is not None:
                 new_tree = new_tree.add(key, value)
         return new_tree
 
-    def __iter__(self) -> Iterator[KT]:  # 修改迭代器只返回键
+    def __iter__(self) -> Iterator[KT]:
         return (k for k, _ in self.to_list())
 
     def __str__(self) -> str:
-        """字典的字符串表示"""
         items = self.to_list()
         if not items:
             return "{}"
@@ -238,14 +218,12 @@ class BinaryTreeDict(Generic[KT, VT]):
         ) + "}"
 
     def __eq__(self, other: object) -> bool:
-        """判断两个字典是否相等"""
         if not isinstance(other, BinaryTreeDict):
             return False
         return self.to_list() == other.to_list()
 
     @staticmethod
     def empty() -> 'BinaryTreeDict[KT, VT]':
-        """创建空字典"""
         return BinaryTreeDict()
 
 
