@@ -11,10 +11,12 @@ AccT = TypeVar('AccT')  # 累加器类型泛型
 
 
 def compare_keys(a: KT, b: KT) -> int:
-    # 将不同类型统一转换为字符串比较
-    a_str = str(a)
-    b_str = str(b)
-    return (a_str > b_str) - (a_str < b_str)
+    try:
+        return (a > b) - (a < b)
+    except TypeError:
+        a_type = str(type(a))
+        b_type = str(type(b))
+        return (a_type > b_type) - (a_type < b_type)
 
 
 class TreeNodeDict(TypedDict, total=False):
@@ -182,9 +184,10 @@ class BinaryTreeDict(Generic[KT, VT]):
         return BinaryTreeDict.from_list(result)
 
     def map(self, func: Callable[[KT], KT]) -> 'BinaryTreeDict[KT, VT]':
-        """映射键值对生成新字典"""
-        mapped = [(func(k), v) for k, v in self.to_list()]
-        return BinaryTreeDict.from_list(mapped)
+        new_tree = BinaryTreeDict()
+        for k, v in self.to_list():
+            new_tree = new_tree.add(func(k), v)
+        return new_tree
 
     def reduce(self, func: Callable[[AccT, KT], AccT], initial: AccT) -> AccT:
         """归约操作"""
@@ -200,8 +203,8 @@ class BinaryTreeDict(Generic[KT, VT]):
             new_tree = new_tree.add(key, value)
         return new_tree
 
-    def __iter__(self) -> Iterator[Tuple[KT, VT]]:
-        return iter(self.to_list())
+    def __iter__(self) -> Iterator[KT]:
+        return (k for k, _ in self.to_list())
 
     def __str__(self) -> str:
         """字典的字符串表示"""
