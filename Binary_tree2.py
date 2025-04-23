@@ -10,7 +10,6 @@ class SupportsRichComparison(Protocol):
     def __ge__(self, other: Any) -> bool: ...
 
 
-
 KT = TypeVar("KT", int, str)
 VT = TypeVar("VT", int, str)
 AccT = TypeVar("AccT")

@@ -98,7 +98,6 @@ def test_api():
     assert total_len == len("a") + len("b") + len("c")
 
 
-
 keys = st.integers()
 values = st.text()
 key_value_pairs = st.tuples(keys, values)
@@ -116,6 +115,7 @@ def test_add_and_length(pairs):
         tree = tree.add(k, v)
         assert len(tree.to_list()) == expected_length  # 使用 to_list() 长度替代 length()
 
+
 @given(pairs=st.lists(key_value_pairs), key=st.integers())
 def test_search(pairs, key):
     tree = from_list(pairs)
@@ -123,11 +123,13 @@ def test_search(pairs, key):
     expected_value = next((v for k, v in reversed(pairs) if k == key), None)
     assert tree.search(key) == expected_value
 
+
 @given(pairs=st.lists(key_value_pairs), key=st.integers(), new_value=st.text())
 def test_add_overwrite(pairs, key, new_value):
     tree = from_list(pairs)
     updated_tree = tree.add(key, new_value)
     assert updated_tree.search(key) == new_value
+
 
 # ------------------------- Remove & Member Tests -------------------------
 @given(pairs=st.lists(key_value_pairs), key=st.integers())
@@ -141,22 +143,24 @@ def test_remove(pairs, key):
     else:
         assert removed_tree == tree  # 未修改原树
 
+
 @given(pairs=st.lists(key_value_pairs), key=st.integers())
 def test_member(pairs, key):
     tree = from_list(pairs)
     unique_keys = {k for k, _ in pairs}
     assert member(key, tree) == (key in unique_keys)
 
+
 # ------------------------- List Conversion Tests -------------------------
 @given(pairs=st.lists(key_value_pairs))
 def test_from_list_to_list(pairs):
     tree = from_list(pairs)
-    # 去重并保留最后一次出现的键
     expected_dict = {}
     for k, v in pairs:
         expected_dict[k] = v
     expected = sorted(expected_dict.items(), key=lambda x: x[0])
     assert tree.to_list() == expected
+
 
 # ------------------------- Higher-Order Functions Tests -------------------------
 @given(pairs=st.lists(key_value_pairs))
@@ -166,12 +170,14 @@ def test_filter(pairs):
     expected = [(k, v) for k, v in tree.to_list() if k % 2 == 0]
     assert filtered.to_list() == expected
 
+
 @given(pairs=st.lists(key_value_pairs))
 def test_map(pairs):
     tree = from_list(pairs)
     mapped = tree.map(lambda k: k + 1)
     expected = [(k + 1, v) for k, v in tree.to_list()]
     assert mapped.to_list() == sorted(expected, key=lambda x: x[0])
+
 
 @given(pairs=st.lists(key_value_pairs))
 def test_reduce(pairs):
@@ -180,6 +186,7 @@ def test_reduce(pairs):
     expected = sum(k for k, _ in tree.to_list())
     assert sum_keys == expected
 
+
 # ------------------------- Iterator Test -------------------------
 @given(pairs=st.lists(key_value_pairs))
 def test_iterator(pairs):
@@ -187,11 +194,13 @@ def test_iterator(pairs):
     via_iterator = list(iter(tree))
     assert sorted(via_iterator) == sorted(k for k, _ in tree.to_list())
 
+
 # ------------------------- Empty Tree Test -------------------------
 def test_empty():
     tree = empty()
     assert tree.is_empty()
     assert tree.to_list() == []
+
 
 # ------------------------- Concatenation Tests -------------------------
 @given(pairs1=st.lists(key_value_pairs), pairs2=st.lists(key_value_pairs))
@@ -199,10 +208,10 @@ def test_concat(pairs1, pairs2):
     t1 = from_list(pairs1)
     t2 = from_list(pairs2)
     combined = concat(t1, t2)
-    # 预期结果：t2 的键覆盖 t1 的同名键
     expected_dict = dict(pairs1 + pairs2)
     expected = sorted(expected_dict.items(), key=lambda x: x[0])
     assert combined.to_list() == expected
+
 
 @given(pairs1=st.lists(key_value_pairs), pairs2=st.lists(key_value_pairs), pairs3=st.lists(key_value_pairs))
 def test_concat_associativity(pairs1, pairs2, pairs3):
@@ -215,12 +224,11 @@ def test_concat_associativity(pairs1, pairs2, pairs3):
     right_assoc = concat(t1, concat(t2, t3))
     assert left_assoc == right_assoc
 
+
 # ------------------------- Monoid Laws Test -------------------------
 @given(pairs=st.lists(key_value_pairs))
 def test_monoid_laws(pairs):
     t = from_list(pairs)
     empty_tree = empty()
-    # 左单位元
     assert concat(empty_tree, t) == t
-    # 右单位元
     assert concat(t, empty_tree) == t
