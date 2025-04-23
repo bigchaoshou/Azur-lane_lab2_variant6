@@ -3,7 +3,7 @@ from typing import (
     Iterator, TypedDict, Generic, TypeVar, Iterable, Any
 )
 
-KT = TypeVar('KT')
+KT = TypeVar("KT", bound=Any)
 VT = TypeVar('VT')
 AccT = TypeVar('AccT')
 
@@ -276,18 +276,18 @@ def intersection(t1: BinaryTreeDict[Any, Any],
 
 
 def filter_set(tree: BinaryTreeDict[Any, Any],
-               predicate: Callable[[Any, Any], bool]
+               predicate: Callable[[Any], bool]
                ) -> BinaryTreeDict[Any, Any]:
     return tree.filter(predicate)
 
 
 def map_set(tree: BinaryTreeDict[Any, Any],
-            func: Callable[[Any, Any],
+            func: Callable[[Any],
             Tuple[Any, Any]]) -> BinaryTreeDict[Any, Any]:
     return tree.map(func)
 
 
 def reduce_set(tree: BinaryTreeDict[Any, Any],
-               func: Callable[[Any, Any, Any], Any],
+               func: Callable[[Any, Any], Any],
                initial: Any) -> Any:
     return tree.reduce(func, initial)
