@@ -11,24 +11,10 @@ AccT = TypeVar('AccT')  # 累加器类型泛型
 
 
 def compare_keys(a: KT, b: KT) -> int:
-    """自定义键比较函数，处理None、int、str类型的比较"""
-    if a is None:
-        if b is None:
-            return 0
-        else:
-            return -1  # None < 非None
-    elif b is None:
-        return 1  # 非None > None
-    elif isinstance(a, int) and isinstance(b, int):
-        return (a > b) - (a < b)
-    elif isinstance(a, int) and isinstance(b, str):
-        return -1  # int < str
-    elif isinstance(a, str) and isinstance(b, int):
-        return 1  # str > int
-    elif isinstance(a, str) and isinstance(b, str):
-        return (a > b) - (a < b)
-    else:
-        raise ValueError(f"Unsupported key types: {type(a)} and {type(b)}")
+    # 将不同类型统一转换为字符串比较
+    a_str = str(a)
+    b_str = str(b)
+    return (a_str > b_str) - (a_str < b_str)
 
 
 class TreeNodeDict(TypedDict, total=False):
@@ -44,6 +30,9 @@ class BinaryTreeDict(Generic[KT, VT]):
 
     def __init__(self, root: Optional[TreeNodeDict] = None) -> None:
         self.root = root
+
+    def is_empty(self) -> bool:
+        return self.root is None
 
     def size(self) -> int:
         """获取字典条目数"""
@@ -186,22 +175,22 @@ class BinaryTreeDict(Generic[KT, VT]):
             result.append((node['key'], node['value']))
             self._inorder_traversal(node['right'], result)
 
-    def filter(self, predicate: Callable[[KT, VT], bool]
+    def filter(self, predicate: Callable[[KT], bool]
                ) -> 'BinaryTreeDict[KT, VT]':
         """过滤键值对生成新字典"""
-        result = [(k, v) for k, v in self.to_list() if predicate(k, v)]
+        result = [(k, v) for k, v in self.to_list() if predicate(k)]
         return BinaryTreeDict.from_list(result)
 
-    def map(self, func: Callable[[KT, VT], Tuple[KT, VT]]) -> 'BinaryTreeDict[KT, VT]':
+    def map(self, func: Callable[[KT], KT]) -> 'BinaryTreeDict[KT, VT]':
         """映射键值对生成新字典"""
-        mapped = [func(k, v) for k, v in self.to_list()]
+        mapped = [(func(k), v) for k, v in self.to_list()]
         return BinaryTreeDict.from_list(mapped)
 
-    def reduce(self, func: Callable[[AccT, KT, VT], AccT], initial: AccT) -> AccT:
+    def reduce(self, func: Callable[[AccT, KT], AccT], initial: AccT) -> AccT:
         """归约操作"""
         result = initial
-        for k, v in self.to_list():
-            result = func(result, k, v)
+        for k, _ in self.to_list():
+            result = func(result, k)
         return result
 
     def concat(self, other: 'BinaryTreeDict[KT, VT]') -> 'BinaryTreeDict[KT, VT]':
@@ -211,9 +200,8 @@ class BinaryTreeDict(Generic[KT, VT]):
             new_tree = new_tree.add(key, value)
         return new_tree
 
-    def __iter__(self) -> Iterator[KT]:
-        """迭代器支持（返回键）"""
-        return (k for k, v in self.to_list())
+    def __iter__(self) -> Iterator[Tuple[KT, VT]]:
+        return iter(self.to_list())
 
     def __str__(self) -> str:
         """字典的字符串表示"""
