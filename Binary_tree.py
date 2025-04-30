@@ -3,8 +3,8 @@ from typing import (
     Iterator, TypedDict, Generic, TypeVar, Iterable, Any
 )
 
-KT = TypeVar("KT", bound=Any)
-VT = TypeVar('VT')
+KT = TypeVar("KT", int,str,None)
+VT = TypeVar('VT', int,str,None)
 AccT = TypeVar('AccT')
 
 
@@ -18,8 +18,8 @@ def compare_keys(a: KT, b: KT) -> int:
 
 
 class TreeNodeDict(TypedDict, total=False):
-    key: Any
-    value: Any
+    key: int
+    value: str
     left: Optional['TreeNodeDict']
     right: Optional['TreeNodeDict']
 
