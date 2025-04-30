@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 from typing import (
     Optional, List, Tuple, Callable,
     Iterator, TypedDict, Generic, TypeVar, Iterable, Any
 )
-from __future__ import annotations
+
 
 KT = TypeVar("KT", int, str, None)
 VT = TypeVar("VT", int, str, None)
