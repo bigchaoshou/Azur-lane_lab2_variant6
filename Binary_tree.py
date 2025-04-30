@@ -183,7 +183,6 @@ class BinaryTreeDict(Generic[KT, VT]):
             self._inorder_traversal(node['left'], result)
             result.append((node['key'], node['value']))
             self._inorder_traversal(node['right'], result)
-        return
 
     def filter(self,
                predicate: Callable[[KT], bool]
@@ -192,7 +191,7 @@ class BinaryTreeDict(Generic[KT, VT]):
         return BinaryTreeDict.from_list(result)
 
     def map(self, func: Callable[[KT], KT]) -> 'BinaryTreeDict[KT, VT]':
-        new_tree: BinaryTreeDict[KT, VT] = BinaryTreeDict().empty()
+        new_tree: BinaryTreeDict[KT, VT] = BinaryTreeDict()
         for k, v in self.to_list():
             new_tree = new_tree.add(func(k), v)
         return new_tree
@@ -320,8 +319,8 @@ def filter_set(tree: BinaryTreeDict[Any, Any],
 
 
 def map_set(tree: BinaryTreeDict[Any, Any],
-            func: Callable[[Any],
-            Tuple[Any, Any]]) -> BinaryTreeDict[Any, Any]:
+            func: Callable[[Any], Any]
+           ) -> BinaryTreeDict[Any, Any]:
     return tree.map(func)
 
 
