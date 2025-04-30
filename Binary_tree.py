@@ -24,8 +24,8 @@ def compare_keys(a: KT, b: KT) -> int:
 
 
 class TreeNodeDict(TypedDict, total=False):
-    key: int
-    value: str
+    key: KT
+    value: VT
     left: Optional['TreeNodeDict']
     right: Optional['TreeNodeDict']
 
