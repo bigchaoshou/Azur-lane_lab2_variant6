@@ -23,7 +23,7 @@ def compare_keys(a: KT, b: KT) -> int:
         return (str(a) > str(b)) - (str(a) < str(b))
 
 
-class TreeNodeDict(TypedDict, total=False, Generic[KT, VT]):
+class TreeNodeDict(TypedDict, Generic[KT, VT], total=False):
     key: KT
     value: VT
     left: Optional['TreeNodeDict']
