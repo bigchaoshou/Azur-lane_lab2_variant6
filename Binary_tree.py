@@ -320,7 +320,7 @@ def filter_set(tree: BinaryTreeDict[Any, Any],
 
 def map_set(tree: BinaryTreeDict[Any, Any],
             func: Callable[[Any], Any]
-           ) -> BinaryTreeDict[Any, Any]:
+            ) -> BinaryTreeDict[Any, Any]:
     return tree.map(func)
 
 
