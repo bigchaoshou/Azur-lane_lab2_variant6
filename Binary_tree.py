@@ -33,7 +33,7 @@ class TreeNodeDict(TypedDict, Generic[KT, VT], total=False):
 class BinaryTreeDict(Generic[KT, VT]):
 
     def __init__(self, root: Optional[TreeNodeDict[KT, VT]] = None) -> None:
-        self.root: Optional[TreeNode[KT, VT]] = root
+        self.root: Optional[TreeNodeDict[KT, VT]] = root
 
     def is_empty(self) -> bool:
         return self.root is None
