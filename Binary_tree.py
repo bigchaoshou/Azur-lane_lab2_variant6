@@ -9,12 +9,20 @@ AccT = TypeVar('AccT')
 
 
 def compare_keys(a: KT, b: KT) -> int:
+    if a is None:
+        return -1 if b is not None else 0
+    if b is None:
+        return 1
+    
+    a_type = type(a).__name__
+    b_type = type(b).__name__
+    if a_type != b_type:
+        return (a_type > b_type) - (a_type < b_type)
+    
     try:
         return (a > b) - (a < b)
     except TypeError:
-        a_type = str(type(a))
-        b_type = str(type(b))
-        return (a_type > b_type) - (a_type < b_type)
+        return (str(a) > str(b)) - (str(a) < str(b))
 
 
 class TreeNodeDict(TypedDict, total=False):
