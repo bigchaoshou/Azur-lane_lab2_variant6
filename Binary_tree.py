@@ -3,8 +3,8 @@ from typing import (
     Iterator, TypedDict, Generic, TypeVar, Iterable, Any
 )
 
-KT = TypeVar("KT",int,str,None)
-VT = TypeVar('VT',int,str,None)
+KT = TypeVar("KT", int, str, None)
+VT = TypeVar('VT', int, str, None)
 AccT = TypeVar('AccT')
 
 
