@@ -191,7 +191,7 @@ class BinaryTreeDict(Generic[KT, VT]):
         return BinaryTreeDict.from_list(result)
 
     def map(self, func: Callable[[KT], KT]) -> 'BinaryTreeDict[KT, VT]':
-        new_tree: BinaryTreeDict[KT, VT] = BinaryTreeDict()
+        new_tree: BinaryTreeDict[KT, VT] = BinaryTreeDict[KT,VT]()
         for k, v in self.to_list():
             new_tree = new_tree.add(func(k), v)
         return new_tree
