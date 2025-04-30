@@ -13,12 +13,10 @@ def compare_keys(a: KT, b: KT) -> int:
         return -1 if b is not None else 0
     if b is None:
         return 1
-    
     a_type = type(a).__name__
     b_type = type(b).__name__
     if a_type != b_type:
         return (a_type > b_type) - (a_type < b_type)
-    
     try:
         return (a > b) - (a < b)
     except TypeError:
