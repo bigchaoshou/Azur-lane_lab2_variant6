@@ -180,7 +180,7 @@ class BinaryTreeDict(Generic[KT, VT]):
         return result
 
     def _inorder_traversal(self,
-                           node: Optional[TreeNodeDict],
+                           node: Optional[TreeNodeDict[KT, VT]],
                            result: List[Tuple[KT, VT]]) -> None:
         if node is not None:
             self._inorder_traversal(node['left'], result)
@@ -194,7 +194,7 @@ class BinaryTreeDict(Generic[KT, VT]):
         return BinaryTreeDict.from_list(result)
 
     def map(self, func: Callable[[KT], KT]) -> 'BinaryTreeDict[KT, VT]':
-        new_tree: BinaryTreeDict[KT, VT] = BinaryTreeDict[KT, VT]()
+        new_tree: BinaryTreeDict[KT, VT] = BinaryTreeDict()
         for k, v in self.to_list():
             new_tree = new_tree.add(func(k), v)
         return new_tree
