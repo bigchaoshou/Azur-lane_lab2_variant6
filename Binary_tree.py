@@ -268,7 +268,7 @@ class BinaryTreeDict(Generic[KT, VT]):
         return BinaryTreeDict()
 
 
-def empty() -> BinaryTreeDict[None, None]:
+def empty() -> BinaryTreeDict[KT, VT]:
     return BinaryTreeDict.empty()
 
 
