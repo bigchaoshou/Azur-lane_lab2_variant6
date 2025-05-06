@@ -271,28 +271,36 @@ class BinaryTreeDict(Generic[KT, VT]):
 def empty() -> BinaryTreeDict[None, None]:
     return BinaryTreeDict.empty()
 
+
 def cons(key: KT, value: VT, 
          tree: BinaryTreeDict[KT, VT]) -> BinaryTreeDict[KT, VT]:
     return tree.add(key, value)
+
 
 def concat(t1: BinaryTreeDict[KT, VT], 
            t2: BinaryTreeDict[KT, VT]) -> BinaryTreeDict[KT, VT]:
     return t1.concat(t2)
 
+
 def member(key: KT, tree: BinaryTreeDict[KT, VT]) -> bool:
     return tree.contains_key(key)
+
 
 def remove(tree: BinaryTreeDict[KT, VT], key: KT) -> BinaryTreeDict[KT, VT]:
     return tree.remove(key)
 
+
 def from_list(items: Iterable[Tuple[KT, VT]]) -> BinaryTreeDict[KT, VT]:
     return BinaryTreeDict.from_list(items)
+
 
 def to_list(tree: BinaryTreeDict[KT, VT]) -> List[Tuple[KT, VT]]:
     return tree.to_list()
 
+
 def length(tree: BinaryTreeDict[KT, VT]) -> int:
     return tree.size()
+
 
 def intersection(t1: BinaryTreeDict[KT, VT], 
                  t2: BinaryTreeDict[KT, VT]) -> BinaryTreeDict[KT, VT]:
@@ -302,13 +310,16 @@ def intersection(t1: BinaryTreeDict[KT, VT],
             result = result.add(k, v)
     return result
 
+
 def filter_set(tree: BinaryTreeDict[KT, VT], 
                predicate: Callable[[KT], bool]) -> BinaryTreeDict[KT, VT]:
     return tree.filter(predicate)
 
+
 def map_set(tree: BinaryTreeDict[KT, VT], 
             func: Callable[[KT], KT]) -> BinaryTreeDict[KT, VT]:
     return tree.map(func)
+
 
 def reduce_set(tree: BinaryTreeDict[KT, VT], 
                func: Callable[[VT, VT], VT], initial: VT) -> VT:
