@@ -8,7 +8,7 @@ from typing import (
 
 KT = TypeVar("KT", int, str, None)
 VT = TypeVar("VT", int, str, None)
-AccT = TypeVar('AccT')
+AccT = TypeVar('AccT', int, str, None)
 
 
 def compare_keys(a: KT, b: KT) -> int:
@@ -322,5 +322,6 @@ def map_set(tree: BinaryTreeDict[KT, VT],
 
 
 def reduce_set(tree: BinaryTreeDict[KT, VT],
-               func: Callable[[VT, VT], VT], initial: VT) -> VT:
+               func: Callable[[AccT, VT], AccT],
+               initial: AccT) -> AccT:
     return tree.reduce(func, initial)
