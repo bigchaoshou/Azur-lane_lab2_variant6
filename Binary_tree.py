@@ -271,64 +271,45 @@ class BinaryTreeDict(Generic[KT, VT]):
 def empty() -> BinaryTreeDict[None, None]:
     return BinaryTreeDict.empty()
 
-
-def cons(key: Any,
-         value: Any,
-         tree: BinaryTreeDict[Any, Any]) -> BinaryTreeDict[Any, Any]:
+def cons(key: KT, value: VT, 
+         tree: BinaryTreeDict[KT, VT]) -> BinaryTreeDict[KT, VT]:
     return tree.add(key, value)
 
-
-def concat(t1: BinaryTreeDict[Any, Any],
-           t2: BinaryTreeDict[Any, Any]) -> BinaryTreeDict[Any, Any]:
+def concat(t1: BinaryTreeDict[KT, VT], 
+           t2: BinaryTreeDict[KT, VT]) -> BinaryTreeDict[KT, VT]:
     return t1.concat(t2)
 
-
-def member(key: Any, tree: BinaryTreeDict[Any, Any]) -> bool:
+def member(key: KT, tree: BinaryTreeDict[KT, VT]) -> bool:
     return tree.contains_key(key)
 
-
-def remove(tree: BinaryTreeDict[Any, Any],
-           key: Any) -> BinaryTreeDict[Any, Any]:
+def remove(tree: BinaryTreeDict[KT, VT], key: KT) -> BinaryTreeDict[KT, VT]:
     return tree.remove(key)
 
-
-def from_list(items: Iterable[Tuple[Any, Any]]
-              ) -> BinaryTreeDict[Any, Any]:
+def from_list(items: Iterable[Tuple[KT, VT]]) -> BinaryTreeDict[KT, VT]:
     return BinaryTreeDict.from_list(items)
 
-
-def to_list(tree: BinaryTreeDict[Any, Any]
-            ) -> List[Tuple[Any, Any]]:
+def to_list(tree: BinaryTreeDict[KT, VT]) -> List[Tuple[KT, VT]]:
     return tree.to_list()
 
-
-def length(tree: BinaryTreeDict[Any, Any]) -> int:
+def length(tree: BinaryTreeDict[KT, VT]) -> int:
     return tree.size()
 
-
-def intersection(t1: BinaryTreeDict[Any, Any],
-                 t2: BinaryTreeDict[Any, Any]
-                 ) -> BinaryTreeDict[Any, Any]:
-    result = empty()
+def intersection(t1: BinaryTreeDict[KT, VT], 
+                 t2: BinaryTreeDict[KT, VT]) -> BinaryTreeDict[KT, VT]:
+    result = empty()  # type: BinaryTreeDict[KT, VT]
     for k, v in t1.to_list():
         if t2.contains_key(k):
             result = result.add(k, v)
     return result
 
-
-def filter_set(tree: BinaryTreeDict[Any, Any],
-               predicate: Callable[[Any], bool]
-               ) -> BinaryTreeDict[Any, Any]:
+def filter_set(tree: BinaryTreeDict[KT, VT], 
+               predicate: Callable[[KT], bool]) -> BinaryTreeDict[KT, VT]:
     return tree.filter(predicate)
 
-
-def map_set(tree: BinaryTreeDict[KT, VT],
-            func: Callable[[KT], KT]
-            ) -> BinaryTreeDict[KT, VT]:
+def map_set(tree: BinaryTreeDict[KT, VT], 
+            func: Callable[[KT], KT]) -> BinaryTreeDict[KT, VT]:
     return tree.map(func)
 
-
-def reduce_set(tree: BinaryTreeDict[Any, Any],
-               func: Callable[[Any, Any], Any],
-               initial: Any) -> Any:
+def reduce_set(tree: BinaryTreeDict[KT, VT], 
+               func: Callable[[VT, VT], VT], initial: VT) -> VT:
     return tree.reduce(func, initial)
