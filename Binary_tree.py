@@ -311,16 +311,16 @@ def intersection(t1: BinaryTreeDict[KT, VT],
     return result
 
 
-def filter_set(tree: BinaryTreeDict[KT, VT], 
+def filter_set(tree: BinaryTreeDict[KT, VT],
                predicate: Callable[[KT], bool]) -> BinaryTreeDict[KT, VT]:
     return tree.filter(predicate)
 
 
-def map_set(tree: BinaryTreeDict[KT, VT], 
+def map_set(tree: BinaryTreeDict[KT, VT],
             func: Callable[[KT], KT]) -> BinaryTreeDict[KT, VT]:
     return tree.map(func)
 
 
-def reduce_set(tree: BinaryTreeDict[KT, VT], 
+def reduce_set(tree: BinaryTreeDict[KT, VT],
                func: Callable[[VT, VT], VT], initial: VT) -> VT:
     return tree.reduce(func, initial)
