@@ -52,7 +52,8 @@ class BinaryTreeDict(Generic[KT, VT]):
                 + self._size_recursive(node['right']))
 
     def add(self, key: KT, value: VT) -> 'BinaryTreeDict[KT, VT]':
-        return BinaryTreeDict(self._add_recursive(self.root, key, value))
+        tree = BinaryTreeDict(self._add_recursive(self.root, key, value))
+        return tree
 
     def _add_recursive(
             self, node: Optional[TreeNodeDict],
