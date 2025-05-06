@@ -272,12 +272,12 @@ def empty() -> BinaryTreeDict[None, None]:
     return BinaryTreeDict.empty()
 
 
-def cons(key: KT, value: VT, 
+def cons(key: KT, value: VT,
          tree: BinaryTreeDict[KT, VT]) -> BinaryTreeDict[KT, VT]:
     return tree.add(key, value)
 
 
-def concat(t1: BinaryTreeDict[KT, VT], 
+def concat(t1: BinaryTreeDict[KT, VT],
            t2: BinaryTreeDict[KT, VT]) -> BinaryTreeDict[KT, VT]:
     return t1.concat(t2)
 
@@ -302,7 +302,7 @@ def length(tree: BinaryTreeDict[KT, VT]) -> int:
     return tree.size()
 
 
-def intersection(t1: BinaryTreeDict[KT, VT], 
+def intersection(t1: BinaryTreeDict[KT, VT],
                  t2: BinaryTreeDict[KT, VT]) -> BinaryTreeDict[KT, VT]:
     result = empty()  # type: BinaryTreeDict[KT, VT]
     for k, v in t1.to_list():
