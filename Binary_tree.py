@@ -85,7 +85,10 @@ class BinaryTreeDict(Generic[KT, VT]):
 
     def search(self, key: KT) -> Optional[VT]:
         node = self._search_recursive(self.root, key)
-        return node['value'] if node else None
+        if node
+            return node['value'] 
+        else 
+            return None
 
     def _search_recursive(self,
                           node: Optional[TreeNodeDict],
