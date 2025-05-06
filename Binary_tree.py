@@ -322,6 +322,6 @@ def map_set(tree: BinaryTreeDict[KT, VT],
 
 
 def reduce_set(tree: BinaryTreeDict[KT, VT],
-               func: Callable[[AccT, VT], AccT],
+               func: Callable[[AccT, KT], AccT],
                initial: AccT) -> AccT:
     return tree.reduce(func, initial)
