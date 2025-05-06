@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import (
     Optional, List, Tuple, Callable,
-    Iterator, TypedDict, Generic, TypeVar, Iterable, Any
+    Iterator, TypedDict, Generic, TypeVar, Iterable
 )
 
 
