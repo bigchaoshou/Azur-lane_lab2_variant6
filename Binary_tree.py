@@ -6,7 +6,7 @@ from typing import (
 )
 
 
-KT = TypeVar("KT", int, str, None)
+KT = TypeVar("KT", int, str)
 VT = TypeVar("VT", int, str, None)
 AccT = TypeVar('AccT')
 
