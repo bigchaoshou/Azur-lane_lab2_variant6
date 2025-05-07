@@ -114,7 +114,7 @@ def test_add_and_length(pairs):
             expected_length += 1
         tree = tree.add(k, v)
         assert (len(tree.to_list()) ==
-                expected_length)  # 使用 to_list() 长度替代 length()
+                expected_length)
 
 
 @given(pairs=st.lists(key_value_pairs), key=st.integers())
