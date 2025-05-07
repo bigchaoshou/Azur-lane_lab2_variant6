@@ -190,7 +190,6 @@ class BinaryTreeDict(Generic[KT, VT]):
             self._inorder_traversal(node['left'], result)
             result.append((node['key'], node['value']))
             self._inorder_traversal(node['right'], result)
-        return
 
     def filter(self,
                predicate: Callable[[KT], bool]
