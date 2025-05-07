@@ -8,7 +8,7 @@ from typing import (
 
 KT = TypeVar("KT", int, str, None)
 VT = TypeVar("VT", int, str, None)
-AccT = TypeVar('AccT', int, str, None)
+AccT = TypeVar('AccT')
 
 
 def compare_keys(a: KT, b: KT) -> int:
